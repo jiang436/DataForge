@@ -1,0 +1,39 @@
+# Docker Compose 部署配置
+# 启动: docker compose up -d
+# 停止: docker compose down
+
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: dataforge-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=deepseek
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - DB_PATH=/app/data/dataforge.db
+      - DATA_DIR=/app/data
+    volumes:
+      - ../data:/app/data          # CSV 数据持久化
+      - ./logs:/app/logs            # 日志持久化
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../deploy/Dockerfile.frontend
+    container_name: dataforge-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
