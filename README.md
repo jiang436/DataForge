@@ -6,7 +6,7 @@
 [![Vue 3](https://img.shields.io/badge/Vue%203-Frontend-4FC08D.svg)](https://vuejs.org/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Memory-orange.svg)](https://www.trychroma.com/)
 [![Ruff](https://img.shields.io/badge/Ruff-Linter-261230.svg)](https://docs.astral.sh/ruff/)
-[![Tests](https://img.shields.io/badge/Tests-249%20passed-brightgreen.svg)](.)
+[![Tests](https://img.shields.io/badge/Tests-247%20passed-brightgreen.svg)](.)
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF.svg)](.github/workflows/ci.yml)
 [![ReAct](https://img.shields.io/badge/Agent-ReAct%20Loop-blue.svg)](.)
 
@@ -277,7 +277,7 @@ DataForge/
 │       └── __tests__/
 │           └── chat.test.ts         # 前端单元测试（17 个）
 │
-├── tests/                           # 后端测试（232 个用例）
+├── tests/                           # 后端测试（230 个用例）
 │   ├── conftest.py                  # 共享 fixtures
 │   ├── mock_llm.py                  # FakeLLM — 无 API 调用的模拟 LLM
 │   ├── test_sqlite_store.py         # 数据层
@@ -474,7 +474,7 @@ DASHSCOPE_API_KEY=sk-xxxxxxxxxxxxxxxx
 ### 运行测试
 
 ```bash
-# 全部后端测试（232 个）
+# 全部后端测试（230 个）
 python -m pytest tests/ -v
 
 # 按模块
@@ -493,28 +493,28 @@ cd frontend && npx vitest
 ### 测试结果
 
 ```
-============================== 232 passed in ~30s ==============================
+======================== 230 passed, 2 skipped in 17.08s ========================
 
-tests/test_sqlite_store.py          # 数据层：CRUD、安全限制、PRAGMA、CTE
-tests/test_tools.py                 # 工具函数：SQL执行、图表生成
-tests/test_token_tracker.py         # Token追踪：记录、快照、线程安全
-tests/test_conditional_logic.py     # 条件路由：SQL重试、辩论轮次、Validator驳回
-tests/test_propagation.py           # 状态传播：初始状态、历史上下文、进度映射
-tests/test_performance.py           # 性能统计：节点计时、百分比、全流程模拟
-tests/test_dataflows.py             # 数据流：CSV导入+查询+错误处理
-tests/test_agents.py                # Agent工厂：7个Agent的创建和验证
-tests/test_agent_prompts.py         # Prompt模板：结构完整性、变量占位符验证
-tests/test_agent_reasoning.py       # ReAct推理：think→act→observe 多轮迭代
-tests/test_react_agent.py           # ReAct循环：工具调用、迭代上限、错误恢复
-tests/test_orchestrator.py          # 编排器：图构建、全流程串联
-tests/test_eval.py                  # 评估框架：多维度指标、评分计算
-tests/test_integration.py           # 全流程集成（FakeLLM）
-tests/test_integration_real_tools.py # 全流程集成（真实工具）
-tests/test_e2e.py                   # 端到端：用户问题→分析报告
+tests/test_sqlite_store.py .............              # 数据层：CRUD、安全限制、PRAGMA、CTE
+tests/test_tools.py ......                            # 工具函数：SQL执行、图表生成
+tests/test_token_tracker.py .........                 # Token追踪：记录、快照、线程安全
+tests/test_conditional_logic.py ...........            # 条件路由：SQL重试、辩论轮次、Validator驳回
+tests/test_propagation.py .......                     # 状态传播：初始状态、历史上下文、进度映射
+tests/test_performance.py .....                       # 性能统计：节点计时、百分比、全流程模拟
+tests/test_dataflows.py .....................          # 数据流：CSV导入+查询+错误处理
+tests/test_agents.py ...............                   # Agent工厂：7个Agent的创建和验证
+tests/test_agent_prompts.py ............................................  # Prompt模板：45个覆盖点
+tests/test_agent_reasoning.py .............             # ReAct推理：think→act→observe 多轮迭代
+tests/test_react_agent.py ..............                # ReAct循环：工具调用、迭代上限、错误恢复
+tests/test_orchestrator.py ................             # 编排器：图构建、全流程串联
+tests/test_eval.py ..................                  # 评估框架：多维度指标、评分计算
+tests/test_integration.py .........................     # 全流程集成（FakeLLM）
+tests/test_integration_real_tools.py ........           # 全流程集成（真实工具）
+tests/test_e2e.py ss                                  # 端到端（需真实LLM，默认跳过）
 
 前端 (Vitest):
-src/__tests__/chat.test.ts          # ChatStore：消息、SSE事件、流式Token、辩论评分
-============================== 17 passed in ~5s ==============================
+src/__tests__/chat.test.ts                             # ChatStore：消息、SSE事件、流式Token、辩论评分
+============================== 17 passed in 5.80s ==============================
 ```
 
 ### 代码规范
