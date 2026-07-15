@@ -1,6 +1,5 @@
 """性能统计测试"""
 
-from unittest.mock import Mock
 
 from backend.graph.orchestrator import DataAgentGraph
 

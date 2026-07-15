@@ -1,0 +1,79 @@
+/*
+ * DataForge AI — Design Tokens
+ *
+ * 基于 taste-skill 设计原则:
+ *   - 暖色单色调 + 单一强调色 (Emerald)
+ *   - 系统字体栈 (非 Inter 默认)
+ *   - 1px 细线边框, 无重阴影
+ *   - 8px 基础圆角, 统一形状系统
+ *   - 无 AI 紫色渐变, 无 emoji 滥用
+ */
+
+:root {
+  /* ─── Canvas ─── */
+  --stone-bg:        #FAFAF9;
+  --stone-surface:   #FFFFFF;
+  --stone-border:    #EBEBE8;
+  --stone-hover:     #F5F5F3;
+
+  /* ─── Ink ─── */
+  --ink-primary:     #1A1A19;
+  --ink-secondary:   #6B6B68;
+  --ink-tertiary:    #9D9D99;
+  --ink-disabled:    #C5C5C1;
+
+  /* ─── Accent: Emerald (数据/分析感) ─── */
+  --accent:          #059669;
+  --accent-strong:   #047857;
+  --accent-bg:       #ECFDF5;
+  --accent-border:   #A7F3D0;
+
+  /* ─── 语义色 ─── */
+  --amber:           #D97706;
+  --amber-bg:        #FFFBEB;
+  --amber-border:    #FCD34D;
+
+  --red:             #DC2626;
+  --red-bg:          #FEF2F2;
+  --red-border:      #FECACA;
+
+  --blue:            #2563EB;
+  --blue-bg:         #EFF6FF;
+  --blue-border:     #BFDBFE;
+
+  --purple:          #7C3AED;
+  --purple-bg:       #F5F3FF;
+
+  /* ─── Sidebar (Dark) ─── */
+  --sidebar-bg:      #1C1C1A;
+  --sidebar-surface: #262624;
+  --sidebar-border:  #333331;
+  --sidebar-text:    #A8A8A5;
+  --sidebar-active:  #FAFAF9;
+  --sidebar-accent:  #059669;
+
+  /* ─── 形状 ─── */
+  --radius-sm:       6px;
+  --radius-md:       8px;
+  --radius-lg:       12px;
+  --radius-xl:       16px;
+
+  /* ─── 阴影 (微妙, 不上纯黑) ─── */
+  --shadow-card:     0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-elevated: 0 4px 16px -4px rgba(0,0,0,0.06), 0 2px 8px -2px rgba(0,0,0,0.04);
+  --shadow-none:     0 0 0 transparent;
+
+  /* ─── 动效 ─── */
+  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   400ms;
+
+  /* ─── 字体 ─── */
+  --font-sans:       'SF Pro Display', 'Geist Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:       'Geist Mono', 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* ─── 间距 ─── */
+  --sidebar-width:   272px;
+}

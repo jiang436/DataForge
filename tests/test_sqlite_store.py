@@ -1,6 +1,5 @@
 """数据层测试"""
 
-from backend.dataflows.sqlite_store import SQLiteStore
 
 
 class TestSQLiteStore:

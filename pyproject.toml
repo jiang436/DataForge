@@ -32,6 +32,7 @@ dependencies = [
     # ============ 工具 ============
     "python-dotenv>=1.0.0",          # .env 环境变量
     "httpx>=0.24.0",                 # 异步 HTTP 客户端
+    "sqlparse>=0.5.0",               # SQL AST 级别安全校验
 ]
 
 [project.optional-dependencies]
