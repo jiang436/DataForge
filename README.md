@@ -385,40 +385,58 @@ GitHub Actions：Python 3.10~3.12 矩阵测试 + Ruff lint + Pytest (318 passed)
 
 > 覆盖率偏低模块（API 路由、LLM 客户端工厂、报告导出）属于 IO 边界层，适合 E2E/集成测试，单元测试不覆盖是合理选择。
 
-### 性能基准
+### 性能基准（DeepSeek API 实测）
 
-模拟场景: "哪个品牌性价比最高？"（5000 行 × 2 表 JOIN 查询）
+> 场景: "哪个品牌性价比最高？"（5000 行 × 2 表 JOIN）| 时间: 2026-07-16 | Provider: deepseek-chat
+
+**关键指标**
 
 | 指标 | 数值 | 说明 |
 |------|------|------|
-| 单次完整分析 | **81.4s** | 含 LLM API 等待（约 30s） |
-| 首 Token 时间 (TTFT) | **~1.8s** | Planner 返回第一条内容 |
-| 最慢节点 | tools_sql (13.66s) | SQL 执行 + 自动重试 |
-| 最快节点 | SQL Agent (0.12s) | Agent 推理（不含工具） |
-| 平均节点耗时 | 4.68s | 11 个编排节点 |
+| 单次完整分析 | **116.5s** | 7 Agent 全流程 + 2 轮辩论 + Validator 裁判 |
+| 编排节点数 | 9 | Planner → SQL → Chart → Report → 辩论 → Validator |
+| 最慢节点 | SQL Agent (23.0s) | 含 get_table_info + execute_sql 工具调用 |
+| 次慢节点 | Planner (15.7s) | deep_think LLM，任务拆解 + JSON 输出 |
+| 辩论耗时 | 正方 14.8s + 反方 2.4s | 2 轮交替辩论 |
+| 快速节点 | Report Agent (1.5s) | quick_think LLM，报告生成 |
+| 最终裁判 | **rejected** | 反方胜出（65 vs 85），Validator 驳回 2 次后强制结束 |
 
-### Token 用量
+**各节点耗时分布**
 
-模拟单次完整分析（7 Agent × DeepSeek-chat）：
+| 节点 | 耗时 | 占比 | LLM 策略 |
+|------|:----:|:----:|----------|
+| SQL Agent | 23.0s | 19.8% | quick_think + tool_calls |
+| Planner | 15.7s | 13.4% | deep_think |
+| Optimistic | 14.8s | 12.7% | quick_think |
+| Step Advance Chart | 2.9s | 2.5% | — |
+| Pessimistic | 2.4s | 2.1% | quick_think |
+| Report Agent | 1.5s | 1.3% | quick_think |
+| Chart Agent + Validator | <1s | <1% | quick_think / deep_think |
+
+> **面试解读**: SQL Agent 最慢（23s），瓶颈在 LLM 推理 + 工具调用往返。优化方向：缓存常见查询结果、Schema 预注入减少 get_table_info 调用。
+
+### Token 用量（基于 DeepSeek-chat 估算）
+
+> TokenTracker 已实现但尚未接入 LLM 回调链，当前为基于 Prompt 模板 + 平均响应长度的估算值
 
 | 指标 | 数值 |
 |------|------|
-| 总输入 Token | **22,250** |
-| 总输出 Token | **2,610** |
-| 单次总 Token | **24,860** |
-| quick_think 占比 | 69%（5 个 Agent：SQL/Chart/Report/辩论双方） |
-| deep_think 占比 | 31%（2 个 Agent：Planner + Validator） |
+| 单次总 Token | ~24,860 |
+| 输入 Token | ~22,250（7 个 Prompt 模板 + Schema + 上下文） |
+| 输出 Token | ~2,610（SQL、图表配置、报告、辩论内容） |
+| quick_think 占比 | ~69%（5 个 Agent：SQL/Chart/Report/辩论双方） |
+| deep_think 占比 | ~31%（2 个 Agent：Planner + Validator） |
 | Token 节省 | **~35%**（双 LLM 策略，高频 Agent 用低价轻量模型） |
 
-| Agent | 输入 Token | 输出 Token | 策略 |
-|-------|:----------:|:----------:|------|
-| Planner | 1,850 | 420 | deep_think |
-| SQL Agent | 3,200 | 180 | quick_think |
-| Chart Agent | 2,100 | 150 | quick_think |
-| Report Agent | 4,800 | 850 | quick_think |
-| Optimistic | 2,600 | 350 | quick_think |
-| Pessimistic | 2,600 | 380 | quick_think |
-| Validator | 5,100 | 280 | deep_think |
+| Agent | 输入 | 输出 | 策略 | 说明 |
+|-------|:----:|:----:|------|------|
+| Planner | 1,850 | 420 | deep_think | 任务拆解 JSON |
+| SQL Agent | 3,200 | 180 | quick_think | 含 Schema 注入 |
+| Chart Agent | 2,100 | 150 | quick_think | 图表类型选择 |
+| Report Agent | 4,800 | 850 | quick_think | 含 SQL 结果注入 |
+| Optimistic | 2,600 | 350 | quick_think | 辩论视角 |
+| Pessimistic | 2,600 | 380 | quick_think | 辩论视角 |
+| Validator | 5,100 | 280 | deep_think | 含完整报告上下文 |
 
 ### TokenTracker 线程安全
 
