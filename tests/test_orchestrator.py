@@ -92,10 +92,16 @@ class TestConditionalLogicExtended:
         assert logic.should_continue_after_validator(state) == "Report Agent"
 
     def test_validator_rejected_at_limit(self):
-        """修订达到上限 → 强制 END。"""
+        """v3.2: 修订达到上限(3) → 强制 END。"""
+        logic = ConditionalLogic()
+        state = {"validation_result": "rejected", "revision_count": 3}
+        assert logic.should_continue_after_validator(state) == "END"
+
+    def test_validator_rejected_below_limit_v32(self):
+        """v3.2: 修订 2 次仍可继续（上限 3）。"""
         logic = ConditionalLogic()
         state = {"validation_result": "rejected", "revision_count": 2}
-        assert logic.should_continue_after_validator(state) == "END"
+        assert logic.should_continue_after_validator(state) == "Report Agent"
 
     def test_validator_needs_review(self):
         """需要人工审核 → END（暂停图等待人工）。"""

@@ -149,8 +149,12 @@ class TestValidatorPrompt:
         assert "approved" in VALIDATOR_SYSTEM_PROMPT
         assert "rejected" in VALIDATOR_SYSTEM_PROMPT
 
-    def test_result_only_two_values(self):
-        assert "result 只能是" in VALIDATOR_SYSTEM_PROMPT.lower() or "不要输出其他值" in VALIDATOR_SYSTEM_PROMPT
+    def test_result_only_valid_values(self):
+        """v3.2: 支持 approved / approved_with_suggestions / rejected 三种有效值"""
+        prompt_lower = VALIDATOR_SYSTEM_PROMPT.lower()
+        assert "approved" in prompt_lower
+        assert "rejected" in prompt_lower
+        assert "approved_with_suggestions" in prompt_lower or "不要输出其他值" in VALIDATOR_SYSTEM_PROMPT
 
 
 # ═══════════════════════════════════════════════════════════

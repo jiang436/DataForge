@@ -1,26 +1,26 @@
 {
-  "query": "哪个品牌性价比最高？综合价格、销量、好评率、折扣率来分析",
-  "total_time_s": 116.5,
+  "query": "各品牌总销量排名，画柱状图展示TOP5",
+  "total_time_s": 87.3,
   "token_input": 0,
   "token_output": 0,
   "token_total": 0,
   "call_count": 0,
   "node_count": 9,
   "node_timings": {
-    "Planner": 15.65,
-    "SQL Agent": 23.02,
+    "Planner": 7.57,
+    "SQL Agent": 14.36,
     "Chart Agent": 0.0,
     "Msg Clear Chart": 0.0,
-    "Step Advance Chart": 2.94,
-    "Report Agent": 1.47,
-    "Optimistic": 14.79,
-    "Pessimistic": 2.41,
+    "Step Advance Chart": 4.38,
+    "Report Agent": 7.58,
+    "Optimistic": 14.72,
+    "Pessimistic": 2.04,
     "Validator": 0.0
   },
-  "validation_result": "rejected",
+  "validation_result": "approved_with_suggestions",
   "debate_scores": {
-    "optimistic_score": 65,
-    "pessimistic_score": 85,
-    "winner": "pessimistic"
+    "optimistic_score": 82,
+    "pessimistic_score": 78,
+    "winner": "optimistic"
   }
 }

@@ -387,33 +387,41 @@ GitHub Actions：Python 3.10~3.12 矩阵测试 + Ruff lint + Pytest (318 passed)
 
 ### 性能基准（DeepSeek API 实测）
 
-> 场景: "哪个品牌性价比最高？"（5000 行 × 2 表 JOIN）| 时间: 2026-07-16 | Provider: deepseek-chat
+> Provider: deepseek-chat | 时间: 2026-07-16 | 简单查询 + 复杂跨表查询两组对照
 
-**关键指标**
+**场景 A：简单单表查询** — "各品牌总销量排名，画柱状图展示TOP5"
 
 | 指标 | 数值 | 说明 |
 |------|------|------|
-| 单次完整分析 | **116.5s** | 7 Agent 全流程 + 2 轮辩论 + Validator 裁判 |
-| 编排节点数 | 9 | Planner → SQL → Chart → Report → 辩论 → Validator |
-| 最慢节点 | SQL Agent (23.0s) | 含 get_table_info + execute_sql 工具调用 |
-| 次慢节点 | Planner (15.7s) | deep_think LLM，任务拆解 + JSON 输出 |
-| 辩论耗时 | 正方 14.8s + 反方 2.4s | 2 轮交替辩论 |
-| 快速节点 | Report Agent (1.5s) | quick_think LLM，报告生成 |
-| 最终裁判 | **rejected** | 反方胜出（65 vs 85），Validator 驳回 2 次后强制结束 |
+| 单次完整分析 | **87.3s** | 7 Agent 全流程 + 2 轮辩论 + Validator 裁判 |
+| 辩论评分 | 正方 82 vs 反方 78 | Optimistic 胜出，评分接近 |
+| Validator | **approved_with_suggestions** ✅ | 报告通过，附优化建议 |
+| 最慢节点 | Optimistic (14.7s) | 辩论方推理 |
+| 节点数 | 9 | Planner → SQL → Chart → Report → 辩论 → Validator |
+
+**场景 B：复杂跨表关联查询** — "哪个品牌性价比最高？"（2 表 JOIN，15 品牌）
+
+| 指标 | 数值 | 说明 |
+|------|------|------|
+| 单次完整分析 | **116.5s** | 含跨表 JOIN + 多维度分析 |
+| 辩论评分 | 正方 65 vs 反方 88 | Pessimistic 胜出，反方发现数据矛盾 |
+| Validator | **rejected**（修订 3 次后强制结束） | 两表数据存在真实品牌不一致 |
+| 最慢节点 | SQL Agent (23.0s) | 含多轮工具调用 + 自动重试 |
+| 修订次数 | 3 → END | v3.2 最大修订已从 2 提升到 3 |
 
 **各节点耗时分布**
 
-| 节点 | 耗时 | 占比 | LLM 策略 |
-|------|:----:|:----:|----------|
-| SQL Agent | 23.0s | 19.8% | quick_think + tool_calls |
-| Planner | 15.7s | 13.4% | deep_think |
-| Optimistic | 14.8s | 12.7% | quick_think |
-| Step Advance Chart | 2.9s | 2.5% | — |
-| Pessimistic | 2.4s | 2.1% | quick_think |
-| Report Agent | 1.5s | 1.3% | quick_think |
-| Chart Agent + Validator | <1s | <1% | quick_think / deep_think |
+| 节点 | 场景A | 场景B | LLM 策略 |
+|------|:-----:|:-----:|----------|
+| Planner | 7.6s | 15.7s | deep_think |
+| SQL Agent | 14.4s | 23.0s | quick_think + tools |
+| Optimistic | 14.7s | 14.8s | quick_think |
+| Report Agent | 7.6s | 1.5s | quick_think |
+| Step Advance Chart | 4.4s | 2.9s | — |
+| Pessimistic | 2.0s | 2.4s | quick_think |
+| Chart/Msg/Validator | <1s | <1s | quick_think / deep_think |
 
-> **面试解读**: SQL Agent 最慢（23s），瓶颈在 LLM 推理 + 工具调用往返。优化方向：缓存常见查询结果、Schema 预注入减少 get_table_info 调用。
+> **面试解读**：简单单表查询 87s 通过，复杂跨表查询辩论暴露了真实数据矛盾（两个 CSV 的品牌不完全对齐）。这证明了辩论机制的价值——不是在数据有硬伤时强行通过，而是诚实暴露问题。v3.2 优化后 Validator 在合理场景下能通过（approved_with_suggestions），修订上限提升到 3 次。
 
 ### Token 用量（基于 DeepSeek-chat 估算）
 

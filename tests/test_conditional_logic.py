@@ -115,5 +115,11 @@ class TestValidatorRouting:
         assert self.logic.should_continue_after_validator(state) == "Report Agent"
 
     def test_max_revisions_ends(self):
-        state = make_state(validation_result="rejected", revision_count=2)
+        """v3.2: 最大修订次数 3，revision_count >= 3 时强制结束"""
+        state = make_state(validation_result="rejected", revision_count=3)
         assert self.logic.should_continue_after_validator(state) == "END"
+
+    def test_revision_2_still_retries(self):
+        """v3.2: revision_count=2 时仍可修订（最大 3 次）"""
+        state = make_state(validation_result="rejected", revision_count=2)
+        assert self.logic.should_continue_after_validator(state) == "Report Agent"
