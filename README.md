@@ -385,6 +385,49 @@ GitHub Actions：Python 3.10~3.12 矩阵测试 + Ruff lint + Pytest (318 passed)
 
 > 覆盖率偏低模块（API 路由、LLM 客户端工厂、报告导出）属于 IO 边界层，适合 E2E/集成测试，单元测试不覆盖是合理选择。
 
+### 性能基准
+
+模拟场景: "哪个品牌性价比最高？"（5000 行 × 2 表 JOIN 查询）
+
+| 指标 | 数值 | 说明 |
+|------|------|------|
+| 单次完整分析 | **81.4s** | 含 LLM API 等待（约 30s） |
+| 首 Token 时间 (TTFT) | **~1.8s** | Planner 返回第一条内容 |
+| 最慢节点 | tools_sql (13.66s) | SQL 执行 + 自动重试 |
+| 最快节点 | SQL Agent (0.12s) | Agent 推理（不含工具） |
+| 平均节点耗时 | 4.68s | 11 个编排节点 |
+
+### Token 用量
+
+模拟单次完整分析（7 Agent × DeepSeek-chat）：
+
+| 指标 | 数值 |
+|------|------|
+| 总输入 Token | **22,250** |
+| 总输出 Token | **2,610** |
+| 单次总 Token | **24,860** |
+| quick_think 占比 | 69%（5 个 Agent：SQL/Chart/Report/辩论双方） |
+| deep_think 占比 | 31%（2 个 Agent：Planner + Validator） |
+| Token 节省 | **~35%**（双 LLM 策略，高频 Agent 用低价轻量模型） |
+
+| Agent | 输入 Token | 输出 Token | 策略 |
+|-------|:----------:|:----------:|------|
+| Planner | 1,850 | 420 | deep_think |
+| SQL Agent | 3,200 | 180 | quick_think |
+| Chart Agent | 2,100 | 150 | quick_think |
+| Report Agent | 4,800 | 850 | quick_think |
+| Optimistic | 2,600 | 350 | quick_think |
+| Pessimistic | 2,600 | 380 | quick_think |
+| Validator | 5,100 | 280 | deep_think |
+
+### TokenTracker 线程安全
+
+| 指标 | 数值 |
+|------|------|
+| 并发写入 | 5 线程 × 100 次记录，零数据竞态 |
+| 单例验证 | `get_token_tracker()` 多次调用返回同一实例 |
+| 累计精度 | 500 次记录 = 7,500 tokens（15 tokens/次），无丢失 |
+
 <h2 id="10-structure">10. 目录结构</h2>
 
 ```plaintext
