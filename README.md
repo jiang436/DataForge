@@ -185,37 +185,35 @@ graph TD
 
 ### LangGraph 条件路由
 
+系统中 3 个关键决策点，决定 Agent 下一步走向：
+
 ```mermaid
-stateDiagram-v2
-    [*] --> SQL_Agent
-    state SQL_Agent {
-        [*] --> 生成SQL
-        生成SQL --> 执行SQL: tool_calls
-        执行SQL --> 处理结果: 成功
-        执行SQL --> 错误修正: sql_error &amp; retry&lt;2
-        错误修正 --> 生成SQL
-        处理结果 --> [*]
-    }
-    SQL_Agent --> Chart_Agent: 正常
-    SQL_Agent --> Chart_Agent: 无数据/跳过
-    state Debate {
-        [*] --> Optimistic发言
-        Optimistic发言 --> Pessimistic发言
-        Pessimistic发言 --> Optimistic发言: round &lt; max×2
-        Pessimistic发言 --> [*]: 辩论结束
-    }
-    Chart_Agent --> Report_Agent
-    Report_Agent --> Debate
-    Debate --> Validator
-    state Validator {
-        [*] --> 一致性检查
-        一致性检查 --> 通过: approved
-        一致性检查 --> 驳回修正: rejected &amp; revision&lt;3
-        一致性检查 --> 强制结束: revision≥3
-    }
-    通过 --> [*]
-    驳回修正 --> Report_Agent
-    强制结束 --> [*]
+flowchart LR
+    subgraph 路由1["路由① SQL Agent 循环"]
+        direction TB
+        S1["SQL Agent<br/>生成 SQL"] --> S2{"执行结果？"}
+        S2 -->|"成功"| S3["→ Chart Agent"]
+        S2 -->|"语法错误 & 重试≤2"| S1
+        S2 -->|"重试>2 或 无数据"| S4["→ Chart Agent<br/>(跳过SQL)"]
+    end
+
+    subgraph 路由2["路由② 辩论轮次控制"]
+        direction TB
+        D1["Optimistic<br/>正方发言"] --> D2["Pessimistic<br/>反方发言"]
+        D2 --> D3{"轮次 < 2？"}
+        D3 -->|"是，继续"| D1
+        D3 -->|"否，结束"| D4["→ Validator"]
+    end
+
+    subgraph 路由3["路由③ Validator 裁判"]
+        direction TB
+        V1["Validator<br/>一致性检查"] --> V2{"检查结果？"}
+        V2 -->|"approved"| V3["✅ END<br/>报告通过"]
+        V2 -->|"rejected & 修订<3"| V4["→ Report Agent<br/>按建议修正"]
+        V2 -->|"修订≥3"| V5["⚠️ END<br/>强制结束"]
+    end
+
+    路由1 --> 路由2 --> 路由3
 ```
 
 <h2 id="4-features">4. 核心功能</h2>
