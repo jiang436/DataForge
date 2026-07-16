@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>body{background:#fff;display:flex;justify-content:center;padding:30px 20px;margin:0;font-family:system-ui,sans-serif}</style>
+</head><body><div class="mermaid">
+flowchart TD
+    U["👤 用户上传 CSV + 提问"] --> P["① Planner<br/>任务拆解为执行步骤"]
+    P --> S["② SQL Agent<br/>查表结构 → 生成SQL → 执行"]
+    S --> ST["🔧 execute_sql<br/>SQLite 查询"]
+    ST -->|"错误 ≤2次"| S
+    ST -->|成功| C["③ Chart Agent<br/>数据 → Plotly 图表 JSON"]
+    C --> CT["🔧 generate_chart<br/>生成柱状图/折线图/散点图"]
+    CT --> R["④ Report Agent<br/>汇总 SQL 结果 + 图表"]
+    R --> D{"⑤ Optimistic ⇄ ⑥ Pessimistic<br/>2 轮对抗辩论"}
+    D --> DS["🏆 DebateScorer<br/>三维量化评分"]
+    DS --> V{"⑦ Validator<br/>裁判验证"}
+    V -->|"驳回 ≤2次"| R
+    V -->|通过| E["📊 输出报告 + 图表"]
+    V -->|"驳回 ≥2次"| F["⚠️ 强制结束"]
+</div>
+<script>mermaid.initialize({startOnLoad:true,theme:'default'});</script>
+</body></html>

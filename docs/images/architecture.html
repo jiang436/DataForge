@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>body{background:#fff;display:flex;justify-content:center;padding:30px 20px;margin:0;font-family:system-ui,sans-serif}</style>
+</head><body><div class="mermaid">
+graph TD
+    subgraph 表现层
+        A1["Vue 3 + Element Plus<br/>对话式 UI"]
+        A2["Plotly.js<br/>交互图表渲染"]
+        A3["SSE 流式接收<br/>Token 级实时展示"]
+    end
+    subgraph 网关层
+        B1["FastAPI Middleware<br/>API Key 鉴权"]
+        B2["ErrorHandler<br/>全局异常拦截"]
+        B3["RateLimiter<br/>滑动窗口限流"]
+    end
+    subgraph 业务层
+        C1["LangGraph 编排引擎<br/>StateGraph + 条件路由"]
+        C2["7 个 AI Agent<br/>Planner / SQL / Chart / Report<br/>Optimistic / Pessimistic / Validator"]
+        C3["DebateScorer<br/>辩论评分器"]
+    end
+    subgraph 工具层
+        D1["execute_sql<br/>SQL 白名单安全校验"]
+        D2["generate_chart<br/>Plotly JSON 生成"]
+        D3["ChromaDB<br/>向量记忆检索"]
+    end
+    subgraph 持久层
+        E1[("SQLite<br/>CSV 数据存储")]
+        E2[("ChromaDB<br/>上下文记忆")]
+        E3[("文件系统<br/>报告 MD/DOCX/HTML")]
+    end
+    A1 --> B1 --> C1
+    A2 --> A1
+    A3 --> A1
+    C1 --> C2
+    C2 --> D1
+    C2 --> D2
+    C2 --> D3
+    C3 --> C2
+    D1 --> E1
+    D2 --> E3
+    D3 --> E2
+</div>
+<script>mermaid.initialize({startOnLoad:true,theme:'default'});</script>
+</body></html>
