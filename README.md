@@ -363,8 +363,27 @@ GitHub Actions：Python 3.10~3.12 矩阵测试 + Ruff lint + Pytest (318 passed)
 | 前端测试文件 | 1 |
 | 前端测试用例 | 17 |
 | **总计** | **341** |
-| **通过** | **318 passed + 17 passed = 335** |
-| **跳过** | 2（需真实 LLM，`--run-e2e` 参数启用）|
+| **通过** | **335** (98.2%) |
+| **失败** | 4 (1.2%，prompt v3.2 适配中) |
+| **跳过** | 2 (E2E，需真实 LLM) |
+| **执行耗时** | 17.04s (无覆盖率) / 28.76s (含覆盖率) |
+
+### 代码覆盖率
+
+| 核心模块 | 覆盖率 | 说明 |
+|----------|:------:|------|
+| `agent/utils/state.py` | 100% | 状态定义，所有 TypedDict 路径被覆盖 |
+| `graph/propagation.py` | 100% | 状态传播，全路径覆盖 |
+| `eval/metrics.py` | 100% | 评估指标，完整覆盖 |
+| `dataflows/sqlite_store.py` | 94% | 数据层 CRUD + 安全限制 |
+| `utils/json_parser.py` | 83% | JSON 3 层回退解析器 |
+| `prompts/__init__.py` | 83% | Prompt 模板加载器 |
+| `utils/tool_logging.py` | 85% | 工具调用日志装饰器 |
+| `tools/__init__.py` | 64% | Agent 工具函数 |
+| `graph/graph_setup.py` | 67% | LangGraph 图构建 |
+| **总体** | **42%** | 4,378 条语句，核心业务模块覆盖率高 |
+
+> 覆盖率偏低模块（API 路由、LLM 客户端工厂、报告导出）属于 IO 边界层，适合 E2E/集成测试，单元测试不覆盖是合理选择。
 
 <h2 id="10-structure">10. 目录结构</h2>
 
