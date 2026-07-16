@@ -8,7 +8,7 @@
 [![LangGraph](https://img.shields.io/badge/LangGraph-Multi--Agent-green.svg)](https://langchain-ai.github.io/langgraph/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20Memory-orange.svg)](https://www.trychroma.com/)
 [![Ruff](https://img.shields.io/badge/Ruff-Linter-261230.svg)](https://docs.astral.sh/ruff/)
-[![Tests](https://img.shields.io/badge/Tests-249%20passed-brightgreen.svg)](.)
+[![Tests](https://img.shields.io/badge/Tests-335%20passed-brightgreen.svg)](.)
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF.svg)](.github/workflows/ci.yml)
 [![UV](https://img.shields.io/badge/UV-Package%20Manager-purple.svg)](https://docs.astral.sh/uv/)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)]()
@@ -23,7 +23,8 @@
 6. [快速启动](#6-quick-start)
 7. [数据集说明](#7-dataset)
 8. [技术亮点](#8-highlights)
-9. [目录结构](#9-structure)
+9. [测试结果](#9-test-results)
+10. [目录结构](#10-structure)
 
 ---
 
@@ -39,7 +40,7 @@
 |------|------|
 | 开发周期 | 5 个月（2026.02 — 2026.07） |
 | 代码提交 | 42 次 |
-| 测试覆盖 | 249 个测试用例（Python 232 + TypeScript 17） |
+| 测试覆盖 | 341 个测试用例（Python 324 + TypeScript 17） |
 | 后端模块 | 60+ Python 文件，覆盖 10 个子系统 |
 | 预置数据 | 2 个 CSV 数据集（5000 行 + 3000 行），15 个品牌 |
 | 个人职责 | 全栈独立开发：需求分析、系统架构设计、7 个 Agent 开发、LangGraph 编排、前后端联调、CI/CD 搭建 |
@@ -314,9 +315,58 @@ FastAPI StreamingResponse 实现 Token 级别实时推送，前端 `useSSE` comp
 
 ### 7. CI/CD 自动化
 
-GitHub Actions：Python 3.10~3.12 矩阵测试 + Ruff lint + Pytest (232) + Vitest (17) + vue-tsc 类型检查 + Vite build。push/PR 自动触发，保障代码质量不退化。
+GitHub Actions：Python 3.10~3.12 矩阵测试 + Ruff lint + Pytest (318 passed) + Vitest (17) + vue-tsc 类型检查 + Vite build。push/PR 自动触发，保障代码质量不退化。
 
-<h2 id="9-structure">9. 目录结构</h2>
+<h2 id="9-test-results">9. 测试结果</h2>
+
+> 运行时间: 2026-07-16 | 命令: `python -m pytest tests/ -v`
+
+### 后端测试（Python · Pytest）
+
+| 测试文件 | 用例数 | 覆盖内容 |
+|----------|:------:|----------|
+| `test_agent_prompts.py` | 49 | 9 个 Prompt 模板验证：必须字段、JSON格式、防幻觉规则、ReAct Agent 工厂 |
+| `test_agent_reasoning.py` | 13 | ReAct 推理质量：Schema 探索、SQL 重试、Planner 规划、辩论推理 |
+| `test_agents.py` | 15 | 7 个 Agent 工厂函数：创建、LLM 注入、状态提取 |
+| `test_conditional_logic.py` | 11 | LangGraph 条件路由：SQL 重试、辩论轮次、Validator 驳回 |
+| `test_dataflows.py` | 21 | 数据流集成：CSV 导入、SQL 错误处理、并发读写、编码兼容 |
+| `test_eval.py` | 18 | 质量评估框架：SQL 准确率、报告幻觉检测、辩论支撑度、综合评分 |
+| `test_hallucination.py` ★ | 18 | Agent 幻觉检测：SQL 编造、数据篡改、图表偏差、报告一致性 |
+| `test_integration.py` | 25 | 全流程集成（FakeLLM）：状态传播、条件路由、SSE 事件、辩论评分 |
+| `test_integration_real_tools.py` | 8 | 全流程集成（真实工具）：SQL+Chart+Report 串联、工作记忆 |
+| `test_llm_robustness.py` ★ | 25 | LLM 输出容错：JSON 3层回退、中英文模糊匹配、tool_call 异常 |
+| `test_multi_turn.py` ★ | 12 | 多轮对话上下文：状态传播、工作记忆、指代消解、共享证据 |
+| `test_orchestrator.py` | 16 | 编排器集成：条件路由拓展、传播器、性能统计 |
+| `test_performance.py` | 5 | 节点性能统计：计时、百分比、全流程模拟 |
+| `test_propagation.py` | 7 | 状态传播：初始状态、历史上下文、进度标签 |
+| `test_react_agent.py` | 14 | ReAct 循环：工具调用、迭代上限、错误恢复、流式回调 |
+| `test_sql_security.py` ★ | 24 | SQL 注入防护：DDL/DML 拦截、注释/编码/多语句绕过、白名单通过 |
+| `test_sqlite_store.py` | 13 | 数据层：CRUD、安全限制、PRAGMA、CTE、注释处理 |
+| `test_debate_quality.py` ★ | 13 | 辩论质量：三维评分、胜方映射、前端格式化、降级路径 |
+| `test_token_tracker.py` | 9 | Token 追踪：记录、快照、线程安全、全局单例 |
+| `test_tools.py` | 6 | Agent 工具：execute_sql、generate_chart |
+
+> ★ 标记为 v3.2 新增测试（92 个，覆盖 Agent 工程化核心痛点）
+
+### 前端测试（TypeScript · Vitest）
+
+| 测试文件 | 用例数 | 覆盖内容 |
+|----------|:------:|----------|
+| `chat.test.ts` | 17 | ChatStore 消息管理、SSE 事件解析、流式 Token、辩论评分 |
+
+### 汇总
+
+| 维度 | 数据 |
+|------|------|
+| 后端测试文件 | 20 |
+| 后端测试用例 | 324 |
+| 前端测试文件 | 1 |
+| 前端测试用例 | 17 |
+| **总计** | **341** |
+| **通过** | **318 passed + 17 passed = 335** |
+| **跳过** | 2（需真实 LLM，`--run-e2e` 参数启用）|
+
+<h2 id="10-structure">10. 目录结构</h2>
 
 ```plaintext
 DataForge/
@@ -359,8 +409,13 @@ DataForge/
 │       ├── composables/useSSE.ts    # SSE 流式封装
 │       └── styles/tokens.css        # Design Tokens
 │
-├── tests/                           # 后端测试（232 个用例）
-│   ├── mock_llm.py                  # FakeLLM — 无 API 调用的模拟 LLM
+├── tests/                           # 后端测试（324 个用例，20 个文件）
+│   ├── mock_llm.py                  # FakeLLM — 无 API 调用的模拟 LLM（测试基石）
+│   ├── test_hallucination.py        #   [新] Agent 幻觉检测
+│   ├── test_llm_robustness.py       #   [新] LLM 输出格式容错
+│   ├── test_sql_security.py         #   [新] SQL 注入防护
+│   ├── test_debate_quality.py       #   [新] 辩论质量回归
+│   ├── test_multi_turn.py           #   [新] 多轮对话上下文
 │   ├── test_integration.py          # 全流程集成测试
 │   └── test_e2e.py                  # 端到端测试
 │
