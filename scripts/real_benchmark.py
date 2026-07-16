@@ -48,7 +48,8 @@ tracker = get_token_tracker()
 tracker.reset()
 
 # 4. 运行分析
-QUERY = "哪个品牌性价比最高？综合价格、销量、好评率、折扣率来分析"
+# 使用简单单表查询，验证 Validator 在合理场景下能通过
+QUERY = "各品牌总销量排名，画柱状图展示TOP5"
 print(f"\n分析: {QUERY}")
 print("=" * 60)
 
