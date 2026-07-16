@@ -74,7 +74,7 @@ DIAGRAMS = {
         [*] --> 生成SQL
         生成SQL --> 执行SQL: tool_calls
         执行SQL --> 处理结果: 成功
-        执行SQL --> 错误修正: sql_error &amp; retry&lt;2
+        执行SQL --> 错误修正: sql_error &amp; retry&lt;3
         错误修正 --> 生成SQL
         处理结果 --> [*]
     }
@@ -92,8 +92,8 @@ DIAGRAMS = {
     state Validator {
         [*] --> 一致性检查
         一致性检查 --> 通过: approved
-        一致性检查 --> 驳回修正: rejected &amp; revision&lt;2
-        一致性检查 --> 强制结束: revision≥2
+        一致性检查 --> 驳回修正: rejected &amp; revision&lt;3
+        一致性检查 --> 强制结束: revision≥3
     }
     通过 --> [*]
     驳回修正 --> Report_Agent
@@ -101,9 +101,9 @@ DIAGRAMS = {
 }
 
 SIZES = {
-    "business-flow": "1100,1400",
-    "architecture": "1100,900",
-    "conditional-routing": "1100,1000",
+    "business-flow": "2400,2200",
+    "architecture": "2400,1800",
+    "conditional-routing": "2400,2000",
 }
 
 for name, code in DIAGRAMS.items():
@@ -114,7 +114,8 @@ for name, code in DIAGRAMS.items():
     print(f"Taking screenshot of {name} ({size})...", end=" ", flush=True)
     subprocess.run(
         [CHROME, "--headless=new", f"--screenshot={png_path}",
-         f"--window-size={size}", f"file:///{html_path.as_posix()}"],
+         f"--window-size={size}", "--force-device-scale-factor=2",
+         f"file:///{html_path.as_posix()}"],
         capture_output=True, timeout=30,
     )
     html_path.unlink()
