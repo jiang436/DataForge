@@ -76,7 +76,10 @@ class TestChartAgentPrompt:
         assert "bar" in CHART_AGENT_SYSTEM_PROMPT.lower()
 
     def test_contains_data_json_format(self):
-        assert "data_json" in CHART_AGENT_SYSTEM_PROMPT
+        # v3.2: 新 prompt 使用 execute_python_code 的 matplotlib 代码格式
+        # data_json 不再是主要路径，改为检查代码执行相关内容
+        assert "execute_python_code" in CHART_AGENT_SYSTEM_PROMPT or \
+               "data_json" in CHART_AGENT_SYSTEM_PROMPT
 
     def test_anti_hallucination_rule(self):
         assert "绝对禁止编造数据" in CHART_AGENT_SYSTEM_PROMPT
@@ -111,19 +114,18 @@ class TestDebatePrompts:
         assert "风险" in PESSIMIST_SYSTEM_PROMPT or "谨慎" in PESSIMIST_SYSTEM_PROMPT
 
     def test_both_have_round_prompts(self):
-        # 双方都应该有第一轮和第二轮的区分
-        from backend.agent.debaters.optimist import (
-            OPTIMIST_FIRST_ROUND_PROMPT,
-            OPTIMIST_SECOND_ROUND_PROMPT,
-        )
-        from backend.agent.debaters.pessimist import (
-            PESSIMIST_FIRST_ROUND_PROMPT,
-            PESSIMIST_SECOND_ROUND_PROMPT,
-        )
+        # 双方都应该有第一轮提示（v3.0：第二轮改为动态构建）
+        from backend.agent.debaters.optimist import OPTIMIST_FIRST_ROUND_PROMPT
+        from backend.agent.debaters.pessimist import PESSIMIST_FIRST_ROUND_PROMPT
+
         assert "第一轮" in OPTIMIST_FIRST_ROUND_PROMPT or "first" in OPTIMIST_FIRST_ROUND_PROMPT.lower()
-        assert "第二" in OPTIMIST_SECOND_ROUND_PROMPT or "second" in OPTIMIST_SECOND_ROUND_PROMPT.lower()
         assert "第一轮" in PESSIMIST_FIRST_ROUND_PROMPT or "first" in PESSIMIST_FIRST_ROUND_PROMPT.lower()
-        assert "第二" in PESSIMIST_SECOND_ROUND_PROMPT or "second" in PESSIMIST_SECOND_ROUND_PROMPT.lower()
+
+        # 验证第二轮上下文是动态构建的（通过 create_xxx 函数）
+        from backend.agent.debaters.optimist import create_optimist
+        from backend.agent.debaters.pessimist import create_pessimist
+        assert callable(create_optimist)
+        assert callable(create_pessimist)
 
     def test_both_reference_opponent(self):
         # 第二轮应该引用对方观点

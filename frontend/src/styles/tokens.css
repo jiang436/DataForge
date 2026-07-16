@@ -1,12 +1,18 @@
 /*
- * DataForge AI — Design Tokens
+ * DataForge AI — Design Tokens v2
  *
- * 基于 taste-skill 设计原则:
- *   - 暖色单色调 + 单一强调色 (Emerald)
+ * 借鉴:
+ *   - Taste-Skill: 反 slop 设计, 设计方差/动效/密度 三旋钮
+ *   - TradingAgents: 实时进度面板, 代理状态颜色, 统计计量
+ *   - DataForge v1: 暖色单色调 + Emerald 强调色 (保留)
+ *
+ * 反 slop 原则:
+ *   - 禁止 6 行换行标题 (容器宽度 > 标题长度)
+ *   - 禁止 AI 紫色渐变
+ *   - 禁止 emoji 滥用 (只在状态指示器使用)
+ *   - 禁止重阴影 + 大圆角
+ *   - 1px 细线边框
  *   - 系统字体栈 (非 Inter 默认)
- *   - 1px 细线边框, 无重阴影
- *   - 8px 基础圆角, 统一形状系统
- *   - 无 AI 紫色渐变, 无 emoji 滥用
  */
 
 :root {
@@ -15,6 +21,7 @@
   --stone-surface:   #FFFFFF;
   --stone-border:    #EBEBE8;
   --stone-hover:     #F5F5F3;
+  --stone-active:    #EDEDEB;
 
   /* ─── Ink ─── */
   --ink-primary:     #1A1A19;
@@ -57,18 +64,21 @@
   --radius-md:       8px;
   --radius-lg:       12px;
   --radius-xl:       16px;
+  --radius-full:     9999px;
 
-  /* ─── 阴影 (微妙, 不上纯黑) ─── */
+  /* ─── 阴影 (微妙) ─── */
   --shadow-card:     0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
   --shadow-elevated: 0 4px 16px -4px rgba(0,0,0,0.06), 0 2px 8px -2px rgba(0,0,0,0.04);
   --shadow-none:     0 0 0 transparent;
 
-  /* ─── 动效 ─── */
+  /* ─── 动效 (Taste-Skill 风格) ─── */
   --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
   --duration-fast:   150ms;
   --duration-normal: 250ms;
   --duration-slow:   400ms;
+  --duration-glacial: 700ms;
 
   /* ─── 字体 ─── */
   --font-sans:       'SF Pro Display', 'Geist Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -76,4 +86,36 @@
 
   /* ─── 间距 ─── */
   --sidebar-width:   272px;
+  --panel-gap:       16px;
+  --section-gap:     32px;
+
+  /* ─── 密度旋钮 (Taste-Skill VISUAL_DENSITY) ─── */
+  --density-chat:    1.65;
+  --density-dashboard: 1.4;
+}
+
+/* ─── 暗色模式 ─── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --stone-bg:        #121211;
+    --stone-surface:   #1C1C1A;
+    --stone-border:    #2A2A28;
+    --stone-hover:     #242422;
+    --stone-active:    #2E2E2C;
+
+    --ink-primary:     #EBEBE8;
+    --ink-secondary:   #A8A8A5;
+    --ink-tertiary:    #6B6B68;
+    --ink-disabled:    #4A4A47;
+
+    --accent-bg:       #064E3B;
+    --accent-border:   #065F46;
+
+    --amber-bg:        #451A03;
+    --red-bg:          #450A0A;
+    --blue-bg:         #172554;
+
+    --shadow-card:     0 1px 3px rgba(0,0,0,0.2);
+    --shadow-elevated: 0 4px 16px -4px rgba(0,0,0,0.3);
+  }
 }

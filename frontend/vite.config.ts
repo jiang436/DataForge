@@ -12,7 +12,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: { "/api": { target: "http://localhost:4433", changeOrigin: true } },
+    proxy: {
+      "/api": { target: "http://localhost:4433", changeOrigin: true },
+      "/output": { target: "http://localhost:4433", changeOrigin: true },
+    },
   },
   test: {
     environment: "jsdom",
