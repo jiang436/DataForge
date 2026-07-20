@@ -1,7 +1,6 @@
 """
 GraphSetup — 构建 LangGraph 工作流
 
-参考: tradingagents/graph/setup.py → GraphSetup.setup_graph()
 
 图结构（ReAct 模式下，ToolNode 作为后备）:
   START → Planner → SQL Agent (ReAct) ←→ tools_sql (后备) → Msg Clear SQL
@@ -74,7 +73,6 @@ def _create_msg_clear():
     """
     消息清理节点
 
-    参考: tradingagents/agents/__init__.py → create_msg_delete()
     每个 Agent 完成后清理消息，避免 token 不断膨胀。
 
     ReAct 模式下，每个 Agent 节点内部会产生多条消息（思考→工具调用→观察→...）。
@@ -133,7 +131,6 @@ class GraphSetup:
     """
     图构建器
 
-    参考: tradingagents/graph/setup.py → GraphSetup 类
 
     ReAct 模式关键变更:
       - SQL/Chart Agent 使用 ReAct 循环（内置工具调用）

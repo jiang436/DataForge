@@ -1,7 +1,6 @@
 """
 多 Provider Embedding 工厂
 
-参考: tradingagents/agents/utils/memory.py → get_embedding()
 
 支持多种 Embedding 来源，优先阿里云 DashScope:
   1. 阿里云 DashScope text-embedding-v3（推荐，中文最优）

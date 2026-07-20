@@ -1,7 +1,6 @@
 """
 结构化降级/回退模式
 
-参考: tradingagents 中的 multi-level degradation 模式
 
 提供装饰器和函数，任何函数调用失败时自动降级到备用方案。
 """

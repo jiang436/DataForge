@@ -78,8 +78,7 @@ class CodeExecutor:
       - AST 安全生产检查
       - 自动捕获 stdout + 保存的图片路径
 
-    面试话术: "我实现了 IPython 状态化代码执行环境，LLM 可以像在 Jupyter Notebook
-             中一样写 matplotlib 代码，变量跨代码块保持，图表质量远超固定参数工具。"
+    LLM 可以像在 Jupyter Notebook 中一样编写 matplotlib 代码，变量跨代码块保持。
     """
 
     # 预导入的库名清单（启动时自动注入执行环境）

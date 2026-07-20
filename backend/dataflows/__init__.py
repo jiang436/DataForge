@@ -1,7 +1,6 @@
 """
 数据层 — SQLite 存储 + 演示数据生成
 
-参考: tradingagents/dataflows/ 模式
 
 用法:
     from backend.dataflows import SQLiteStore, generate_all

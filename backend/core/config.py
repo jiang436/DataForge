@@ -1,7 +1,6 @@
 """
 Pydantic BaseSettings 配置系统
 
-参考: app/core/config.py → Pydantic BaseSettings
 
 自动从 .env 文件和环境变量加载配置，提供类型校验和默认值。
 

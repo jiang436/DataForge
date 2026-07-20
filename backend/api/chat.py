@@ -1,7 +1,6 @@
 """
 对话 API — SSE 流式推送 Agent 执行过程
 
-参考: app/services/simple_analysis_service.py
       app/routers/analysis.py
 
 POST /api/chat

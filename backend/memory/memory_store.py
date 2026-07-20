@@ -1,7 +1,6 @@
 """
 ChromaDB 向量记忆库 — 仿 TradingAgents-CN 的 Per-Agent 记忆架构
 
-参考: tradingagents/agents/utils/memory.py → FinancialSituationMemory
 
 核心变更（v3.0 — Per-Agent RAG）:
   原: 单一 AnalysisMemory，全局共享 "analysis_history" collection

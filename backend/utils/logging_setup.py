@@ -1,7 +1,6 @@
 """
 日志系统初始化
 
-参考: tradingagents/utils/logging_init.py
 
 在应用启动时配置统一日志格式。
 """

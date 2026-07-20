@@ -5,9 +5,7 @@ v3.0 变更:
   - 主路径使用 with_structured_output(DebateScoreResult) 消除 JSON 解析失败
   - 保留 free-text + parse_llm_json 作为降级路径
 
-面试话术: "辩论不是做做样子，我有量化评分体系:
-         论据质量(40%) + 数据支撑(40%) + 反驳力度(20%)，
-         Validator 在裁判报告的同时对辩论双方独立打分。"
+评分体系: 论据质量(40%) + 数据支撑(40%) + 反驳力度(20%)，对辩论双方独立打分。
 """
 
 import logging

@@ -2,7 +2,6 @@
 Agent 状态定义
 
 LangGraph 使用 TypedDict 定义全局状态，每个 Agent 节点读取和写入 state 字段。
-参考: tradingagents/agents/utils/agent_states.py → AgentState
 
 设计原则:
   - 继承 MessagesState: 保证 messages 字段兼容 LangGraph 内置 ToolNode

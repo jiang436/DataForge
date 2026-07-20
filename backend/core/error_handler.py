@@ -1,7 +1,6 @@
 """
 全局错误处理中间件
 
-参考: app/middleware/error_handler.py
 
 统一捕获异常，按类型返回标准化 JSON 错误响应。
 支持 AgentFin 类型化异常体系，按异常类型映射 HTTP 状态码。

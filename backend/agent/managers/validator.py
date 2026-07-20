@@ -90,7 +90,6 @@ def create_validator(llm):
     """
     创建 Validator 节点函数
 
-    参考: tradingagents/agents/managers/research_manager.py（裁判模式）
 
     v3.0 改进:
       - 主路径: with_structured_output(ValidationResult) → 确定性类型化输出

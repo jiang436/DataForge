@@ -31,7 +31,6 @@ def create_planner(llm):
     """
     创建 Planner 节点函数
 
-    参考: tradingagents/agents/managers/research_manager.py
     工厂模式: 外部注入 llm → 返回闭包给 LangGraph 调用
 
     Args:

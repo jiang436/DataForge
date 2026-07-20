@@ -1,7 +1,6 @@
 """
 Graph 模块 — 懒加载导出
 
-参考: tradingagents/graph/ 的模式
 
 用法:
     from backend.graph import DataAgentGraph, GraphSetup, ConditionalLogic, Propagator

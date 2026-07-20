@@ -1,7 +1,6 @@
 """
 模型目录
 
-参考: tradingagents/llm_clients/model_catalog.py
 
 每个 Provider 的快速/深度模型分层列表，供前端下拉选择。
 """

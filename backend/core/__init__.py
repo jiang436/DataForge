@@ -1,7 +1,6 @@
 """
 核心模块
 
-参考: app/core/ 模式
 """
 
 from backend.core.config import Settings, get_settings

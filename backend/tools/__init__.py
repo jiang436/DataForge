@@ -4,7 +4,6 @@ Agent 工具函数
 LangChain 的 @tool 装饰器将 Python 函数注册为 LLM 可调用的 Tool。
 Agent 判断需要工具时会输出 tool_call，ReAct 循环内自动执行并返回结果。
 
-参考: tradingagents/agents/utils/agent_utils.py → Toolkit 类中的 @tool 方法
 
 工具清单:
   - get_table_info:      查看指定表的结构（列名、类型、示例数据）

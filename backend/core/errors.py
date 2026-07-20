@@ -4,7 +4,6 @@ AgentFin 异常层次 — 为每种故障模式提供类型化异常。
 每个异常携带可选的 detail dict 用于结构化错误报告。
 ErrorHandlerMiddleware 按异常类型映射到合适的 HTTP 状态码。
 
-参考: tradingagents/dataflows/errors.py → VendorError 体系
 """
 
 

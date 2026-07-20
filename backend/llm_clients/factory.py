@@ -1,7 +1,6 @@
 """
 LLM 客户端工厂
 
-参考: tradingagents/llm_clients/factory.py
 
 提供统一接口创建 LLM 实例，一行代码切换 Provider。
 内置 Token 用量追踪。
@@ -53,8 +52,7 @@ class FallbackChatOpenAI:
       - 透明代理：对外接口与 ChatOpenAI 一致
       - 记录故障转移事件供监控
 
-    面试话术: "我实现了双端点故障转移 + 指数退避，主 LLM 提供商限流或故障时
-             自动切换备用端点，大幅提升系统可用性。"
+    主端点失败后自动切换备用端点，配合指数退避重试，提升系统可用性。
     """
 
     def __init__(
@@ -340,7 +338,6 @@ def create_deep_llm(provider: str = "deepseek", enable_failover: bool = True, **
 
 # ═══════════════════════════════════════════════
 # Token 用量追踪
-# 参考: tradingagents/config/usage_models.py
 # ═══════════════════════════════════════════════
 
 
@@ -348,8 +345,7 @@ class TokenTracker:
     """
     Token 用量追踪器
 
-    面试话术: "我做了一个 Token 追踪器，每次 LLM 调用后自动记录输入/输出 token，
-    可以在分析结束时汇总成本，面试官关心的'可控性'就在这里体现。"
+    每次 LLM 调用后记录输入/输出 token，支持成本分析和用量监控。
     """
 
     def __init__(self):

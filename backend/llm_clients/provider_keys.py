@@ -1,7 +1,6 @@
 """
 Provider 配置与密钥管理
 
-参考: tradingagents/llm_clients/provider_keys.py
 
 集中管理所有 Provider 的 base_url、env_key、别名映射。
 添加新 Provider 只需在此文件加一条记录。
@@ -10,7 +9,7 @@ Provider 配置与密钥管理
 # ─── Provider 配置表 ───
 # 每个 Provider 可配置 fallback_url + fallback_env_key 用于故障转移。
 # 当主端点限流/故障时，自动切换到备用端点，提升可用性。
-# 参考: data_analysis_agent 的 AsyncFallbackOpenAIClient 双端点故障转移模式
+
 PROVIDER_CONFIG = {
     "deepseek": {
         "base_url": "https://api.deepseek.com/v1",

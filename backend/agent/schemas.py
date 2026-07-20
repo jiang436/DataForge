@@ -4,7 +4,6 @@ LLM 输出 Schema — 为关键 Agent 提供 Pydantic 类型化输出。
 每个 Schema 通过 llm.with_structured_output() 使用，确保 LLM 输出是确定性的
 类型化数据，消除 free-text JSON 解析的脆弱性。
 
-参考: tradingagents/agents/schemas.py → PortfolioRating, ResearchPlan 等
 
 设计:
   - 字段级 description 成为 LLM 的输出指令

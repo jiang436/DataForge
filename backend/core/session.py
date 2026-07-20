@@ -39,8 +39,7 @@ class SessionContext:
     每次 DataAgentGraph.propagate() 调用创建一个 SessionContext，
     所有中间产物（报告、图表、SQL 结果）保存到独立目录。
 
-    面试话术: "我实现了 UUID 会话隔离，每次分析创建独立目录存放所有产物，
-            调试/复现/下载都很方便，这是从 data_analysis_agent 借鉴的设计。"
+    每次分析创建独立目录存放所有产物，便于调试、复现和下载。
     """
 
     def __init__(

@@ -1,7 +1,6 @@
 """
 Agent 模块 — 懒加载导出
 
-参考: tradingagents/agents/__init__.py → __getattr__ 模式
 
 用法:
     from backend.agent import create_planner, create_sql_agent

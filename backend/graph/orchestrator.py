@@ -1,7 +1,6 @@
 """
 DataAgentGraph — 主编排器
 
-参考: tradingagents/graph/trading_graph.py → TradingAgentsGraph 类
 
 负责:
   1. 创建 LLM (quick + deep，工厂模式)
@@ -41,7 +40,6 @@ class DataAgentGraph:
     """
     Multi-Agent 数据分析系统主编排器
 
-    参考: tradingagents/graph/trading_graph.py → TradingAgentsGraph
 
     使用方式:
       orchestrator = DataAgentGraph(provider="deepseek", store=sqlite_store)
@@ -80,7 +78,7 @@ class DataAgentGraph:
             set_store(store)
 
         # ─── 创建 LLM ───
-        # 参考: TradingAgentsGraph.__init__() 中的双 LLM 创建
+        # 创建双 LLM（quick_think + deep_think）
         self.quick_thinking_llm = create_quick_llm(provider)
         self.deep_thinking_llm = create_deep_llm(provider)
         logger.info(
@@ -132,7 +130,6 @@ class DataAgentGraph:
         """
         启动 LangGraph 图执行
 
-        参考: tradingagents/graph/trading_graph.py → propagate()
 
         Args:
             user_query:         用户问题
@@ -198,7 +195,7 @@ class DataAgentGraph:
         logger.info("流模式: %s", args["stream_mode"])
 
         # ─── 执行图 ───
-        # 参考: for chunk in self.graph.stream(init_agent_state, **args)
+        # 流式执行图
         try:
             for chunk in self.graph.stream(init_state, **args):
                 # ─── 提取节点名 + 计时 ───
@@ -354,7 +351,6 @@ class DataAgentGraph:
         """
         构建性能数据
 
-        参考: trading_graph.py → _build_performance_data()
         """
         if not node_timings:
             return {"total_time": total_elapsed, "node_count": 0}

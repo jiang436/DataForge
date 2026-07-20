@@ -1,7 +1,6 @@
 """
 分析反思器 — 仿 TradingAgents-CN 的 Per-Agent 反思存储
 
-参考: tradingagents/graph/trading_graph.py → reflect_and_remember()
 
 v3.0 变更（Per-Agent RAG）:
   原: 反思完成后存入全局 "analysis_history" collection

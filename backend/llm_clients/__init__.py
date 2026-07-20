@@ -1,7 +1,6 @@
 """
 LLM 客户端包
 
-参考: tradingagents/llm_clients/__init__.py
 
 用法:
     from backend.llm_clients import create_quick_llm, create_deep_llm

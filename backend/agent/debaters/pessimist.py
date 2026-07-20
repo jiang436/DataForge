@@ -83,7 +83,6 @@ def create_pessimist(llm):
     """
     创建 Pessimistic Analyst 节点函数
 
-    参考: tradingagents/agents/researchers/bear_researcher.py
     """
 
     prompt = ChatPromptTemplate.from_messages(

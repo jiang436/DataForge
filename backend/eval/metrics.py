@@ -1,8 +1,7 @@
 """
 Agent 评估指标 — 衡量每个 Agent 的输出质量
 
-面试话术: "我实现了一个多维度的评估体系，对每个 Agent 的输出都有量化指标，
-         包括 SQL 准确率、报告幻觉检测、辩论数据支撑度等。"
+包括 SQL 准确率、报告幻觉检测、辩论数据支撑度等。
 """
 
 from dataclasses import dataclass, field

@@ -30,7 +30,6 @@ def create_sql_agent(llm, tools, store=None):
     """
     创建 SQL Agent 节点函数（ReAct 模式）
 
-    参考: tradingagents/agents/analysts/market_analyst.py → create_market_analyst()
 
     v3.0 改进:
       - 支持 store 参数：预取表结构和示例数据，注入 prompt，跳过 get_table_info 调用

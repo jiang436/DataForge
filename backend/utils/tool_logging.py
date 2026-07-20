@@ -1,7 +1,6 @@
 """
 工具调用日志装饰器
 
-参考: tradingagents/utils/tool_logging.py
 
 为 @tool 函数添加自动日志记录：开始、成功、失败、耗时。
 """

@@ -1,7 +1,6 @@
 """
 条件路由逻辑 — 统一管理所有 Agent 的条件判断
 
-参考: tradingagents/graph/conditional_logic.py → ConditionalLogic 类
 
 每个 should_continue_xxx 方法:
   1. 检查 tool_call_count 防止死循环
@@ -126,7 +125,6 @@ class ConditionalLogic:
         """
         辩论循环路由 —— Optimistic ↔ Pessimistic 交替发言
 
-        参考: tradingagents/graph/conditional_logic.py → should_continue_debate()
         """
         debate_state = state.get("debate_state", {})
         latest_speaker = debate_state.get("latest_speaker", "")

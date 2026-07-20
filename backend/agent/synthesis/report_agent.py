@@ -30,7 +30,6 @@ def create_report_agent(llm):
     """
     创建 Report Agent 节点函数
 
-    参考: tradingagents/agents/trader/trader.py 的 create_trader()
 
     注意: Report Agent 不需要 bind_tools，纯文本生成。
           使用独立高 token LLM（16384），长报告不截断。

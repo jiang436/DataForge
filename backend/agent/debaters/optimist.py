@@ -83,7 +83,6 @@ def create_optimist(llm):
     """
     创建 Optimistic Analyst 节点函数
 
-    参考: tradingagents/agents/researchers/bull_researcher.py
     """
 
     prompt = ChatPromptTemplate.from_messages(

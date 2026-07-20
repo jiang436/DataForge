@@ -1,7 +1,6 @@
 """
 智能文本截断
 
-参考: tradingagents/agents/utils/memory.py → _smart_text_truncation()
 
 三层降级:
   1. 句子边界截断（按 。！？）

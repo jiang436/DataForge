@@ -1,7 +1,6 @@
 """
 状态传播器 — 初始状态创建 + 图执行参数
 
-参考: tradingagents/graph/propagation.py → Propagator 类
 
 v2.0 变更:
   - 新增 working_memory、agent_reflections 初始化
@@ -33,7 +32,6 @@ class Propagator:
         """
         创建 LangGraph 初始状态
 
-        参考: tradingagents/graph/propagation.py → create_initial_state()
         """
 
         # 将历史经验注入用户消息
@@ -105,7 +103,6 @@ class Propagator:
         """
         获取 LangGraph 执行参数
 
-        参考: tradingagents/graph/propagation.py → get_graph_args()
 
         updates 模式: 每个节点完成后返回增量，用于进度回调
         values 模式:  返回完整状态，用于纯执行
@@ -117,7 +114,6 @@ class Propagator:
         }
 
     # ─── 进度回调映射 ───
-    # 参考: trading_graph.py → _send_progress_update() 的 node_mapping
     PROGRESS_LABELS = {
         "Planner": "📋 任务规划中...",
         "SQL Agent": "🔍 查询数据中... (ReAct)",
